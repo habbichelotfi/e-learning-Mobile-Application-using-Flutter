@@ -1,9 +1,9 @@
-import 'package:e_learning/Courses.dart';
-import 'package:e_learning/HomeScreen.dart';
-import 'package:e_learning/Messages.dart';
-import 'package:e_learning/Profile.dart';
-import 'package:e_learning/Search.dart';
 import 'package:flutter/material.dart';
+import 'screens/courses_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/messages_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/search_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,31 +12,31 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'E-Learning App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey.shade100,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MainNavigationPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class MainNavigationPage extends StatefulWidget {
+  const MainNavigationPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainNavigationPage> createState() => _MainNavigationPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MainNavigationPageState extends State<MainNavigationPage> {
   int index = 0;
-  List<bool> state_b = [true, false, false, false, false];
-  List<Widget> widgets = [
+  final List<bool> _stateB = [true, false, false, false, false];
+  final List<Widget> _widgets = [
     const HomeScreen(),
     const Courses(),
     const Search(),
@@ -44,156 +44,68 @@ class _MyHomePageState extends State<MyHomePage> {
     const Profile()
   ];
 
+  void _onItemTapped(int newIndex) {
+    setState(() {
+      for (int i = 0; i < _stateB.length; i++) {
+        _stateB[i] = false;
+      }
+      _stateB[newIndex] = true;
+      index = newIndex;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: Colors.grey.shade100,
-
-        // bottomNavigationBar: BottomNavigationBar(
-        //
-        //   items: [
-        //       BottomNavigationBarItem(icon: Icon(Icons.home),label: '',),
-        //     BottomNavigationBarItem(icon: Icon(Icons.list_alt),label: ''),
-        //     BottomNavigationBarItem(icon: Icon(Icons.search),label: ''),
-        //     BottomNavigationBarItem(icon: Icon(Icons.messenger),label: ''),
-        //     BottomNavigationBarItem(icon: Icon(Icons.person),label: '')
-        //
-        //   ],
-        //   showSelectedLabels: false,
-        //   showUnselectedLabels: false,
-        //   currentIndex: index,
-        //   selectedItemColor: Colors.blue,
-        //   unselectedItemColor: Colors.grey,
-        // ),
-        body: Stack(
-          children: [
-            widgets.elementAt(index),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                child: SizedBox(
-                  width: size.width,
-                  height: 80,
-                  //color: Colors.white,
-                  child: Stack(
-                    children: [
-                      CustomPaint(
-                        size: Size(size.width, 80),
-                        painter: BNBCustomerPainter(),
-                      ),
-                      SizedBox(
-                        width: size.width,
-                        height: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            state_b[0]
-                                ? IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.home,
-                                        color: Colors.blue.shade700, size: 35))
-                                : IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        for (int i = 0;
-                                            i < state_b.length;
-                                            i++) {
-                                          state_b[i] = false;
-                                        }
-                                        state_b[0] = true;
-                                        index = 0;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.home,
-                                        color: Colors.grey, size: 35)),
-                            state_b[1]
-                                ? IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.album_rounded,
-                                        color: Colors.blue, size: 35))
-                                : IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        for (int i = 0;
-                                            i < state_b.length;
-                                            i++) {
-                                          state_b[i] = false;
-                                        }
-                                        state_b[1] = true;
-                                        index = 1;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.album_rounded,
-                                        color: Colors.grey, size: 35)),
-                            state_b[2]
-                                ? IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.search,
-                                      color: Colors.blue,
-                                      size: 35,
-                                    ))
-                                : IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        for (int i = 0;
-                                            i < state_b.length;
-                                            i++) {
-                                          state_b[i] = false;
-                                        }
-                                        state_b[2] = true;
-                                        index = 2;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.search,
-                                        color: Colors.grey, size: 35)),
-                            state_b[3]
-                                ? IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.message,
-                                        color: Colors.blue, size: 35))
-                                : IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        for (int i = 0;
-                                            i < state_b.length;
-                                            i++) {
-                                          state_b[i] = false;
-                                        }
-                                        state_b[3] = true;
-                                        index = 3;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.message,
-                                        color: Colors.grey, size: 35)),
-                            state_b[4]
-                                ? IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.person,
-                                        color: Colors.blue, size: 35))
-                                : IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        for (int i = 0;
-                                            i < state_b.length;
-                                            i++) {
-                                          state_b[i] = false;
-                                        }
-                                        state_b[4] = true;
-                                        index = 4;
-                                      });
-                                    },
-                                    icon: const Icon(Icons.person,
-                                        color: Colors.grey, size: 35)),
-                          ],
-                        ),
-                      )
-                    ],
+      body: Stack(
+        children: [
+          _widgets.elementAt(index),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            child: SizedBox(
+              width: size.width,
+              height: 80,
+              child: Stack(
+                children: [
+                  CustomPaint(
+                    size: Size(size.width, 80),
+                    painter: BNBCustomerPainter(),
                   ),
-                ))
-          ],
-        ));
+                  SizedBox(
+                    width: size.width,
+                    height: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildNavItem(0, Icons.home),
+                        _buildNavItem(1, Icons.album_rounded),
+                        _buildNavItem(2, Icons.search),
+                        _buildNavItem(3, Icons.message),
+                        _buildNavItem(4, Icons.person),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int itemIndex, IconData icon) {
+    final bool isActive = _stateB[itemIndex];
+    return IconButton(
+      onPressed: () => _onItemTapped(itemIndex),
+      icon: Icon(
+        icon,
+        color: isActive ? Colors.blue.shade700 : Colors.grey,
+        size: 35,
+      ),
+    );
   }
 }
 
@@ -206,7 +118,6 @@ class BNBCustomerPainter extends CustomPainter {
     Path path = Path()..moveTo(0, 20);
     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
     path.quadraticBezierTo(size.width * 0.65, 0, size.width * 0.40, 20);
-    // path.arcToPoint(Offset(size.width*0.60,20),radius: Radius.circular(10),clockwise: false);
     path.quadraticBezierTo(size.width * 0.1, 0, size.width * 0.65, 0);
     path.quadraticBezierTo(size.width * 0.8, 0, size.width, 20);
     path.lineTo(size.width, size.height);
@@ -215,12 +126,8 @@ class BNBCustomerPainter extends CustomPainter {
     path.close();
     canvas.drawShadow(path, Colors.black, 5, true);
     canvas.drawPath(path, paint);
-    // TODO: implement paint
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
-    return false;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
