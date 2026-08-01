@@ -253,12 +253,14 @@ class _HomeScreenState extends State<HomeScreen> {
           imagePath: 'assets/images/ui_ux_design.png',
           duration: '5h 30 min',
           rating: '4.9 (522)',
+          onTap: () => NavigationHelper.navigateTo(context, const CoursePlaylist()),
         ),
         _buildCoursePreviewCard(
           title: 'Web Development',
           imagePath: 'assets/images/web-development.png',
           duration: '5h 30 min',
           rating: '4.9 (522)',
+          onTap: () => NavigationHelper.navigateTo(context, const CoursePlaylist()),
         ),
         _buildCoursePreviewCard(
           title: 'Mobile Dev',
@@ -272,6 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
           imagePath: 'assets/images/python.png',
           duration: '5h 30 min',
           rating: '4.9 (522)',
+          onTap: () => NavigationHelper.navigateTo(context, const CoursePlaylist()),
         ),
       ],
     );
