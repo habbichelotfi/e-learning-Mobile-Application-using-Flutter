@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/course.dart';
 import '../widgets/course_card.dart';
+import '../utils/app_colors.dart';
+import '../widgets/custom_back_button.dart';
 
 class AllCourses extends StatefulWidget {
   const AllCourses({Key? key}) : super(key: key);
@@ -13,13 +15,13 @@ class _AllCoursesState extends State<AllCourses> {
   final List<Course> _courses = [
     Course(
       title: 'UX Fundamentals',
-      subtitle: 'in 50 minutes',
+      subtitle: 'in 50 mins',
       lectures: '79 Lectures',
       students: '1.2K',
       rating: '4.5',
       price: '\$300',
       imagePath: 'assets/images/clock.png',
-      color: Colors.orange.shade700,
+      color: Colors.orange,
       isFavorite: false,
     ),
     Course(
@@ -30,7 +32,7 @@ class _AllCoursesState extends State<AllCourses> {
       rating: '4.5',
       price: '\$300',
       imagePath: 'assets/images/thinking.png',
-      color: Colors.blue.shade300,
+      color: Colors.blue,
       isFavorite: true,
     ),
     Course(
@@ -41,7 +43,7 @@ class _AllCoursesState extends State<AllCourses> {
       rating: '4.5',
       price: '\$300',
       imagePath: 'assets/images/ux_research.png',
-      color: Colors.green.shade300,
+      color: Colors.green,
       isFavorite: false,
     ),
     Course(
@@ -52,7 +54,7 @@ class _AllCoursesState extends State<AllCourses> {
       rating: '4.5',
       price: '\$300',
       imagePath: 'assets/images/ui-design.png',
-      color: Colors.grey.shade300,
+      color: Colors.grey,
       isFavorite: false,
     ),
     Course(
@@ -63,7 +65,7 @@ class _AllCoursesState extends State<AllCourses> {
       rating: '4.5',
       price: '\$300',
       imagePath: 'assets/images/coding.png',
-      color: Colors.blue.shade300,
+      color: Colors.blue,
       isFavorite: false,
     ),
   ];
@@ -71,60 +73,33 @@ class _AllCoursesState extends State<AllCourses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              _buildHeader(context),
-              const SizedBox(height: 45),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _courses.length,
-                  itemBuilder: (context, index) {
-                    final course = _courses[index];
-                    return CourseCard(
-                      course: course,
-                      onFavoriteToggle: () => _toggleFavorite(index),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+      backgroundColor: AppColors.lightGrey,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leadingWidth: 70,
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
+          child: CustomBackButton(),
         ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      children: [
-        InkWell(
-          onTap: () async {
-            await Future.delayed(const Duration(milliseconds: 300));
-            Navigator.pop(context);
-          },
-          child: Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.arrow_back_ios_outlined,
-              color: Colors.grey,
-              size: 20,
-            ),
-          ),
-        ),
-        const SizedBox(width: 30),
-        const Text(
+        title: const Text(
           'Course List',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
-        )
-      ],
+          style: TextStyle(color: AppColors.textDark, fontWeight: FontWeight.bold, fontSize: 22),
+        ),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        physics: const BouncingScrollPhysics(),
+        itemCount: _courses.length,
+        itemBuilder: (context, index) {
+          final course = _courses[index];
+          return CourseCard(
+            course: course,
+            onFavoriteToggle: () => _toggleFavorite(index),
+          );
+        },
+      ),
     );
   }
 
@@ -134,11 +109,16 @@ class _AllCoursesState extends State<AllCourses> {
     });
 
     final message = _courses[index].isFavorite
-        ? '${_courses[index].title} was added to your favorites'
-        : '${_courses[index].title} was removed from your favorites';
+        ? '${_courses[index].title} added to favorites'
+        : '${_courses[index].title} removed from favorites';
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor: AppColors.textDark,
+      ),
     );
   }
 }
